@@ -91,6 +91,9 @@ class Card:
     def flip(self):
         self.isfacedown = not self.isfacedown
 
+    def addRenderData(self,renderdata):
+        self.renderdata = renderdata
+
 class Noble:
     def __init__(self,victory_points,cost):
         self.victory_points = victory_points
