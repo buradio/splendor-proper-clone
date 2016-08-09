@@ -70,9 +70,10 @@ class CardData:
         return TokenPool(s)
 
 class Card:
-    def __init__(self,carddata,isfacedown=False):
+    def __init__(self,carddata,isfacedown=False,faceart="asset/card-face/card-face-placeholder.png"):
         self.carddata=carddata
         self.isfacedown = isfacedown
+        self.faceart = faceart
 
     def tofaceup(self):
         self.isfacedown = False

@@ -15,7 +15,7 @@ class SetData():
 
         self.players = []
         for i in range(4):
-            players.append(Player())
+            self.players.append(Player())
 
         self.board = Board()
         
