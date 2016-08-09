@@ -4,19 +4,19 @@ from board import Board
 
 #Class game data
 class SetData():
-    i=0
-    isRunning = True
+    def __init__(self):
+        self.isRunning = True
 
-    isPressing = False
-    isClicking = False
-    
-    #listRender.append((Surface,positon)) only
-    listRender = []
+        self.isPressing = False
+        self.isClicking = False
+        
+        #listRender.append((Surface,positon)) only
+        self.listRender = []
 
-    players = []
-    for i in range(4):
-        players.append(Player())
+        self.players = []
+        for i in range(4):
+            players.append(Player())
 
-    board = Board()
+        self.board = Board()
         
 gamedata = SetData()
