@@ -69,17 +69,9 @@ class CardData:
         s[t] = 1
         return TokenPool(s)
 
-class CardRenderdata:
-    def __init__(self,size,position,card_front,card_back):
-        self.size = self.width,self.height = size
-        self.position = self.x,self.y = position
-        self.card_front = card_front
-        self.card_back = card_back
-
 class Card:
-    def __init__(self,carddata,renderdata=None,isfacedown=False):
+    def __init__(self,carddata,isfacedown=False):
         self.carddata=carddata
-        self.renderdata=renderdata
         self.isfacedown = isfacedown
 
     def tofaceup(self):
@@ -90,9 +82,6 @@ class Card:
 
     def flip(self):
         self.isfacedown = not self.isfacedown
-
-    def addRenderData(self,renderdata):
-        self.renderdata = renderdata
 
 class Noble:
     def __init__(self,victory_points,cost):

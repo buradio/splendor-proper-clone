@@ -49,5 +49,5 @@ class Board:
 
         self.tokenpool = TokenPool([7,7,7,7,7])
 
-        self.joker = 7
+        self.joker = 5
         self.nobles = load_nobles("cardslist/nobles.csv")
