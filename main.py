@@ -1,6 +1,7 @@
 import pygame
 from data import gamedata
 from control import*
+from button import Button
 
 class SetGame():
     
@@ -25,9 +26,10 @@ class SetGame():
             self.inputFunc()
             if gamedata.isRunning:
                 #logic phase
-                gamedata.update()
+                test()
                 #render phase
                 self.render()
+                gamedata.isClicking = False
 
     def inputFunc(self):
         #input event
@@ -57,12 +59,22 @@ class SetGame():
     
     def render(self):
         for i in range(len(gamedata.listRender)):
-            self.screen.blit(gamedata.listRender[i])
+            self.screen.blit(gamedata.listRender[i][0],gamedata.listRender[i][1])
         pygame.display.flip()
+        gamedata.listRender = []
         
     def quit(self):
         gamedata.isRunning = False
         pygame.quit()
+        
+sf = pygame.Surface((50,50))
+sf.fill((100,50,200))
+b=Button(sf,(20,20))
+def test():
+    b.render()
+    b.ispressed()
+    b.isclicked()
+    b.ishovered()
 
 #initialize game
 game = SetGame()

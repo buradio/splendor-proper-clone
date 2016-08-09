@@ -1,3 +1,4 @@
+import pygame
 from objects import Player
 from board import Board
 
@@ -5,6 +6,10 @@ from board import Board
 class SetData():
     i=0
     isRunning = True
+
+    isPressing = False
+    isClicking = False
+    
     #listRender.append((Surface,positon)) only
     listRender = []
 
@@ -13,11 +18,5 @@ class SetData():
         players.append(Player())
 
     board = Board()
-
-    def update(self):
-        self.i+=1
-        if self.i == 60:
-            print("Thick!")
-            self.i=0
         
 gamedata = SetData()

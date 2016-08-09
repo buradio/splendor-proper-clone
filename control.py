@@ -2,13 +2,14 @@ import pygame
 from data import gamedata
 
 def leftclickDown():
-    pass
+    gamedata.isPressing = True
 
 def rightclickDown():
     pass
 
 def leftclickUp():
-    pass
+    gamedata.isPressing = False
+    gamedata.isClicking = True
 
 def rightclickUp():
     pass
