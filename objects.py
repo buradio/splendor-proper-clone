@@ -25,6 +25,7 @@ class TokenPool:
             self.blue += other.blue
             self.black += other.black
             self.white += other.white
+            return self
         else:
             raise TypeError("cannot add by types other than tokenpool")
 
@@ -35,6 +36,7 @@ class TokenPool:
             self.blue -= other.blue
             self.black -= other.black
             self.white -= other.white
+            return self
         else:
             raise TypeError("cannot subtract by types other than tokenpool")
 
@@ -116,7 +118,7 @@ class Player:
         self.passive_tokens += card.gembonus_astokenpool()
 
     def add_joker(self,joker):
-        self.joker += joker
+        self.joker_tokens += joker
 
     def add_nobles(self,noble):
         self.nobles.append(noble)
@@ -138,8 +140,8 @@ class Player:
         s = 0
         for noble in self.nobles:
             s += noble.victory_points
-        for card in cards_bought:
-            s += card.victory_points
+        for card in self.cards_bought:
+            s += card.carddata.victory_points
         return s
 
 class Deck:
