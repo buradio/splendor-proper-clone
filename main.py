@@ -2,6 +2,7 @@ import pygame
 from data import gamedata
 from control import*
 from button import Button
+from menu import menu
 
 class SetGame():
     
@@ -17,6 +18,8 @@ class SetGame():
         pygame.display.set_caption(self.TITLE)
         #clock thick
         self.clock = pygame.time.Clock()
+        #create menu
+        gamedata.state = 'menu'
         
     def loop(self):
         gamedata.isRunning = True
@@ -26,10 +29,11 @@ class SetGame():
             self.inputFunc()
             if gamedata.isRunning:
                 #logic phase
-                test()
-                #render phase
-                self.render()
-                gamedata.isClicking = False
+                statemanagement()
+                if gamedata.isRunning:
+                    #render phase
+                    self.render()
+                    gamedata.isClicking = False
 
     def inputFunc(self):
         #input event
@@ -67,14 +71,11 @@ class SetGame():
         gamedata.isRunning = False
         pygame.quit()
         
-sf = pygame.Surface((50,50))
-sf.fill((100,50,200))
-b=Button(sf,(20,20))
-def test():
-    b.render()
-    b.ispressed()
-    b.isclicked()
-    b.ishovered()
+def statemanagement():
+    if gamedata.state == 'menu':
+        menu.update()
+    elif gamedata.state == 'playgame':
+        playgame.update()
 
 #initialize game
 game = SetGame()

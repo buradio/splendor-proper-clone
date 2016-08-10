@@ -2,7 +2,7 @@ import pygame
 from data import gamedata
 #class button for imprement
 class Button():
-    def __init__(self,surface,position):
+    def __init__(self,surface,position=(0,0)):
         self.surface = surface
         self.position = position
         self.height = surface.get_height()
