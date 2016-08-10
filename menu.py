@@ -1,6 +1,7 @@
 import pygame
 from data import gamedata
 from button import Button
+from gameplay import GamePlay
 
 pygame.font.init()
 BG_IMG = 'asset/menu/bg.png'
@@ -38,6 +39,10 @@ class Menu():
             self.bStartgame.render()
             self.bHowtoplay.render()
             self.bExit.render()
+
+        if self.bStartgame.isclicked():
+            gamedata.state = 'gameplay'
+            gamedata.gameplay = GamePlay()
                           
         if self.bExit.isclicked():
             self.toggleExit = True
@@ -48,5 +53,3 @@ class Menu():
         if self.bYes.isclicked():
             gamedata.isRunning = False
             pygame.quit()
-
-menu = Menu()

@@ -2,7 +2,8 @@ import pygame
 from data import gamedata
 from control import*
 from button import Button
-from menu import menu
+from menu import Menu
+from gameplay import GamePlay
 
 class SetGame():
     
@@ -20,6 +21,7 @@ class SetGame():
         self.clock = pygame.time.Clock()
         #create menu
         gamedata.state = 'menu'
+        gamedata.menu = Menu()
         
     def loop(self):
         gamedata.isRunning = True
@@ -73,9 +75,9 @@ class SetGame():
         
 def statemanagement():
     if gamedata.state == 'menu':
-        menu.update()
-    elif gamedata.state == 'playgame':
-        playgame.update()
+        gamedata.menu.update()
+    elif gamedata.state == 'gameplay':
+        gamedata.gameplay.update()
 
 #initialize game
 game = SetGame()
