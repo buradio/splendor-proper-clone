@@ -68,6 +68,7 @@ PLAYERPANEL_PV_ICON = "asset/board/playerpanel-vp-icon.png"
 
 #board
 BOARD_SIZE = (800,600)
+BOARD_BG_IMAGE = "asset/board/board-bg.png"
 
 def draw_card_on_board(card):
     surface = pygame.Surface(CARD_ON_BOARD_SIZE)
@@ -283,7 +284,8 @@ def draw_player_panel(player):
 def draw_board(board,players):
     #create board surface
     board_surface = pygame.Surface(BOARD_SIZE)
-    board_surface.fill((100,100,100))
+    board_bg = pygame.image.load(BOARD_BG_IMAGE)
+    board_surface.blit(board_bg,(0,0))
 
     #draw nobles
     x = 20
@@ -343,6 +345,10 @@ class DrawBoardData():
         self.tier1 = None
         self.tier2 = None
         self.tier3 = None
+
+        #boardbg
+        self.boardbg = pygame.image.load(BOARD_BG_IMAGE)
+        
     def update(self,board,players):
         #add .nobles
         x = 20
