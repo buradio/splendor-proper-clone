@@ -64,7 +64,7 @@ PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR = (150,150,150)
 PLAYERPANEL_JOKER_ICON_SIZE = (20,20)
 PLAYERPANEL_JOKER_ICON = "asset/icon/token-joker.png"
 PLAYERPANEL_PV_ICON_SIZE = (20,20)
-PLAYERPANEL_PV_ICON = "asset/icon/token-joker.png"
+PLAYERPANEL_PV_ICON = "asset/board/playerpanel-vp-icon.png"
 
 #board
 BOARD_SIZE = (800,600)
@@ -316,7 +316,7 @@ def draw_board(board,players):
     #draw deck3
     deck3_surf = draw_deck(board.deck3,DECK_TIER3_BACK)
     board_surface.blit(deck3_surf,(20,370))
-    #draw tier2
+    #draw tier3
     x = 171
     for card in board.tier3:
         card_surf = draw_card_on_board(card)
@@ -336,8 +336,84 @@ def draw_board(board,players):
         
     return board_surface
 
+class DrawBoardData():
+    def __init__(self):
+        self.nobles = None
+        self.deck1 = None
+        self.tier1 = None
+        self.tier2 = None
+        self.tier3 = None
+    def update(self,board,players):
+        #add .nobles
+        x = 20
+        self.nobles = []
+        for i in range(5):
+            temp_surf = draw_noble(None)
+            self.nobles.append((temp_surf,(x,20)))
+            x += 75+37
+
+        #add .deck1
+        deck1_surf = draw_deck(board.deck1,DECK_TIER1_BACK)
+        self.deck1 = (deck1_surf,(20,110))
+
+        #add .tier1
+        x = 171
+        self.tier1 = []
+        for card in board.tier1:
+            card_surf = draw_card_on_board(card)
+            self.tier1.append((card_surf,(x,110)))
+            x+=90+11
+
+        #add .deck2
+        deck2_surf = draw_deck(board.deck2,DECK_TIER2_BACK)
+        self.deck2 = (deck2_surf,(20,240))
+
+        #add .tier2
+        x = 171
+        self.tier2 = []
+        for card in board.tier2:
+            card_surf = draw_card_on_board(card)
+            self.tier2.append(card_surf,(x,240))
+            x+=90+11
+
+        #add .deck3
+        deck3_surf = draw_deck(board.deck3,DECK_TIER3_BACK)
+        self.deck3 = (deck3_surf,(20,370))
+
+        #add .tier3
+        x = 171
+        self.tier3 = []
+        for card in board.tier3:
+            card_surf = draw_card_on_board(card)
+            self.tier2.append(card_surf,(x,370))
+            x+=90+11
+
+        #add .tokenpool
+        self.tokenpool = []
+        x = 20
+        for i in range(5):
+            token_icon_surf = draw_board_token_icon(i,board.tokenpool.asList()[i])
+            self.tokenpool.append(token_icon_surf,(x,505))
+            x+=97
+
+        #add .joker
+        joker_surf = draw_board_joker_icon(board.joker)
+        self.joker = (joker_surf,(505,505))
+
+        #add .players
+        y=0
+        self.players = []
+        for player in players:
+            pl_surf = draw_player_panel(player)
+            self.players.append(pl_surf,(600,y))
+            y+=150
+
+        
+        
+
 #testing: create window to blit
-s = pygame.display.set_mode((850,650))
-board_surf = draw_board(gamedata.board,gamedata.players)
-s.blit(board_surf,(0,0))
-pygame.display.flip()
+if __name__ == "__main__":
+    s = pygame.display.set_mode((850,650))
+    board_surf = draw_board(gamedata.board,gamedata.players)
+    s.blit(board_surf,(0,0))
+    pygame.display.flip()
