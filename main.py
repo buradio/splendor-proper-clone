@@ -79,7 +79,8 @@ def statemanagement():
     elif gamedata.state == 'gameplay':
         gamedata.gameplay.update()
 
-#initialize game
-game = SetGame()
-#call gameloop
-game.loop()
+if __name__ == "__main__":
+    #initialize game
+    game = SetGame()
+    #call gameloop
+    game.loop()

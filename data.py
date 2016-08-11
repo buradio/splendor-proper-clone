@@ -18,5 +18,7 @@ class SetData():
             self.players.append(Player("player" + str(i)))
 
         self.board = Board()
+
+        self.gameplay = None
         
 gamedata = SetData()
