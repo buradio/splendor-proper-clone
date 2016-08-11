@@ -43,6 +43,24 @@ class Gamelogic:
             #fail buy
             pass
 
+    def player_buy_hold_card(self,player,index):
+        cost = player.cards_onhold[index]
+
+        #subtract by passive tokens
+        cost -= player.passive_tokens
+        cost = TokenPool([max(0,i) for i in cost.asList()])
+
+        #check if can buy
+        if player.active_tokens > cost or player.activetokens.asList() > cost.asList():
+            #buy card
+            player.active_tokens -= cost
+            player.cards_bought.append(player.cards_onhold[index])
+            player.cards_onhold[index] = None
+        else:
+            #try to buy with joker
+            pass
+        
+
     def check_for_nobles(self,nobles,player):
         for noble in nobles:
             if noble.isplayergetting(player):

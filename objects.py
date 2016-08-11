@@ -91,8 +91,9 @@ class Noble:
         self.victory_points = victory_points
         self.cost = cost
 
-    def isplayergetting(player):
-        return cost < player.passive_tokens or cost == player.passive_tokens
+    def isplayergetting(self,player):
+        return self.cost < player.passive_tokens or \
+               self.cost == player.passive_tokens
 
 class Player:
     def __init__(self,name=""):
@@ -127,7 +128,7 @@ class Player:
         self.cards_onhold.append(card)
 
     def pay_joker(self,joker):
-        self.joker -= joker
+        self.joker_tokens -= joker
 
     def remove_tokens(self,tokenpool):
         self.active_tokens -= tokenpool
