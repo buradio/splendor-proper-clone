@@ -13,10 +13,10 @@ class Button():
             print("pressed")
             return True
         return False
-        
+
     def isclicked(self):
         if self.ishovered() and gamedata.isClicking:
-            print("clicked")
+            print("clicked"+str(self.position))
             return True
         return False
 
@@ -24,10 +24,9 @@ class Button():
         mousepos = pygame.mouse.get_pos()
         if self.position[0]<=mousepos[0]<=self.position[0]+self.width and\
            self.position[1]<=mousepos[1]<=self.position[1]+self.height:
-            #print("hovered")
+            #print("hovered"+str(self.position))
             return True
         return False
 
     def render(self):
         gamedata.listRender.append((self.surface,self.position))
-        

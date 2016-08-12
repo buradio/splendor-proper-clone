@@ -1,6 +1,5 @@
 import pygame
 from objects import Player
-from board import Board
 
 #Class game data
 class SetData():
@@ -9,7 +8,7 @@ class SetData():
 
         self.isPressing = False
         self.isClicking = False
-        
+
         #listRender.append((Surface,positon)) only
         self.listRender = []
 
@@ -17,8 +16,8 @@ class SetData():
         for i in range(4):
             self.players.append(Player("player" + str(i)))
 
-        self.board = Board()
+        self.board = None
 
         self.gameplay = None
-        
+
 gamedata = SetData()

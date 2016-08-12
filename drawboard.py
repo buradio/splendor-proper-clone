@@ -92,7 +92,7 @@ def draw_card_on_board(card):
     gembonus_icon = pygame.image.load(CARD_GEMBONUS_ICONS[gembonus_icon_id])
     gembonus_surf.blit(gembonus_icon,(0,0))
     surface.blit(gembonus_surf,(55,5))
-    
+
     #draw costs
     costs = card.carddata.cost.asList()
     draw_list = []
@@ -100,7 +100,7 @@ def draw_card_on_board(card):
     for i in range(5):
         if costs[i]!=0:
             temp_surf = pygame.Surface(CARD_COST_SIZE)
-            
+
             #draw icon
             icon_surf = pygame.Surface(CARD_COST_ICON_SIZE)
             icon_img = pygame.image.load(CARD_COST_ICONS[i])
@@ -140,11 +140,11 @@ def draw_deck(deck,backart="asset/card-back/tier1-back.png"):
     return surface
 
 def draw_board_token_icon(colorid,number):
-    token_icon_surf = pygame.Surface(BOARD_TOKENPOOL_ICON_SIZE)
+    #token_icon_surf = pygame.Surface(BOARD_TOKENPOOL_ICON_SIZE)
     #draw token icon
-    token_icon_img = pygame.image.load(BOARD_TOKEN_ICONS[colorid])
-    token_icon_surf.fill((255,0,255))
-    token_icon_surf.blit(token_icon_img,(0,0))
+    token_icon_surf = pygame.image.load(BOARD_TOKEN_ICONS[colorid])
+    #token_icon_surf.fill((255,0,255))
+    #token_icon_surf.blit(token_icon_img,(0,0))
 
     #draw token number
     token_num_surf = pygame.Surface((20,20))
@@ -156,12 +156,13 @@ def draw_board_token_icon(colorid,number):
     return token_icon_surf
 
 def draw_board_joker_icon(joker):
-    joker_icon_surf = pygame.Surface(BOARD_TOKENPOOL_ICON_SIZE)
+    joker_icon_surf = pygame.Surface(BOARD_TOKENPOOL_ICON_SIZE, pygame.SRCALPHA, 32)
+    joker_icon_surf=joker_icon_surf.convert_alpha()
     #draw joker icon
     joker_icon_img = pygame.image.load(BOARD_JOKER_ICON)
-    joker_icon_surf.fill((255,0,255))
+    #joker_icon_surf.fill((255,0,255))
     joker_icon_surf.blit(joker_icon_img,(0,0))
-    
+
     #draw joker number
     joker_num_surf = pygame.Surface((20,20))
     joker_num_text = str(joker)
@@ -174,8 +175,9 @@ def draw_board_joker_icon(joker):
 
 def draw_board_token_pool(tokenpool,joker):
     token_list = tokenpool.asList()
-    pool_surface = pygame.Surface(BOARD_TOKENPOOL_SIZE)
-    pool_surface.fill((255,0,255))
+    pool_surface = pygame.Surface(BOARD_TOKENPOOL_SIZE, pygame.SRCALPHA, 32)
+    #pool_surface.fill((255,0,255))
+    pool_surface=pool_surface.convert_alpha()
     x = 0
     for i in range(5):
         token_surf = draw_board_token_icon(i,token_list[i])
@@ -184,7 +186,7 @@ def draw_board_token_pool(tokenpool,joker):
 
     joker_surf = draw_board_joker_icon(joker)
     pool_surface.blit(joker_surf,(x,0))
-    pool_surface.set_colorkey((255,0,255))
+    #pool_surface.set_colorkey((255,0,255))
 
     return pool_surface
 
@@ -244,7 +246,7 @@ def draw_player_panel(player):
         playerpanel_surface.blit(icon_surf,(x,45))
         playerpanel_surface.blit(anum_surf,(x,70))
         playerpanel_surface.blit(pnum_surf,(x,95))
-        
+
         x += 25
 
     #draw joker token icon
@@ -314,7 +316,7 @@ def draw_board(board,players):
         card_surf = draw_card_on_board(card)
         board_surface.blit(card_surf,(x,240))
         x+=90+11
-    
+
     #draw deck3
     deck3_surf = draw_deck(board.deck3,DECK_TIER3_BACK)
     board_surface.blit(deck3_surf,(20,370))
@@ -335,7 +337,7 @@ def draw_board(board,players):
         pl_surf = draw_player_panel(player)
         board_surface.blit(pl_surf,(600,y))
         y+=150
-        
+
     return board_surface
 
 class DrawBoardData():
@@ -348,7 +350,7 @@ class DrawBoardData():
 
         #boardbg
         self.boardbg = pygame.image.load(BOARD_BG_IMAGE)
-        
+
     def update(self,board,players):
         #add .nobles
         x = 20
@@ -379,7 +381,7 @@ class DrawBoardData():
         self.tier2 = []
         for card in board.tier2:
             card_surf = draw_card_on_board(card)
-            self.tier2.append(card_surf,(x,240))
+            self.tier2.append((card_surf,(x,240)))
             x+=90+11
 
         #add .deck3
@@ -391,7 +393,7 @@ class DrawBoardData():
         self.tier3 = []
         for card in board.tier3:
             card_surf = draw_card_on_board(card)
-            self.tier2.append(card_surf,(x,370))
+            self.tier2.append((card_surf,(x,370)))
             x+=90+11
 
         #add .tokenpool
@@ -399,7 +401,7 @@ class DrawBoardData():
         x = 20
         for i in range(5):
             token_icon_surf = draw_board_token_icon(i,board.tokenpool.asList()[i])
-            self.tokenpool.append(token_icon_surf,(x,505))
+            self.tokenpool.append((token_icon_surf,(x,505)))
             x+=97
 
         #add .joker
@@ -411,11 +413,11 @@ class DrawBoardData():
         self.players = []
         for player in players:
             pl_surf = draw_player_panel(player)
-            self.players.append(pl_surf,(600,y))
+            self.players.append((pl_surf,(600,y)))
             y+=150
 
-        
-        
+
+
 
 #testing: create window to blit
 if __name__ == "__main__":
