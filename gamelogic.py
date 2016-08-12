@@ -3,22 +3,25 @@ from data import gamedata
 #gamelogic
 
 class Gamelogic:
-    
-    def init(self,data):
+
+    def __init__(self):
         self.currentturn = 0
         self.data = gamedata
         self.isending = False
+        gamedata.players[0].isplaying = True
 
     def shiftturn(self):
         #advance turn order
+        gamedata.players[self.currentturn].isplaying = False
         self.currentturn += 1
         if self.currentturn == len(gamedata.players):
             self.currentturn = 0
+        gamedata.players[self.currentturn].isplaying = True
 
         #check if any player has got 15 points
-        if gamedata.players[self.currentturn].total_victory_points >= 15:
+        if gamedata.players[self.currentturn].total_victory_points() >= 15:
             self.isending = True
-        
+
         if self.isending and self.currentturn == len(gamedata.players)-1:
             #end game
             pass
@@ -30,7 +33,7 @@ class Gamelogic:
         cost -= player.passive_tokens
         cost = TokenPool([max(0,i) for i in cost.asList()])
 
-        
+
         if player.active_tokens > cost:
             #buy card
             player.active_tokens -= cost
@@ -59,7 +62,7 @@ class Gamelogic:
         else:
             #try to buy with joker
             pass
-        
+
 
     def check_for_nobles(self,nobles,player):
         for noble in nobles:
@@ -88,4 +91,3 @@ class Gamelogic:
         #open a new card for card taken
         tierlist[index] = deck.draw_card()
         pass
-        

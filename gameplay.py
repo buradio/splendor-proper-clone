@@ -3,11 +3,13 @@ from drawboard import*
 from data import gamedata
 from board import Board
 from button import Button
+from gamelogic import Gamelogic
 
 class GamePlay():
     def __init__(self):
         gamedata.board = Board()
         self.board_surf = DrawBoardData()
+        self.gamelg = Gamelogic()
 
     def update(self):
 
@@ -26,7 +28,7 @@ class GamePlay():
         #click and hover function
         for bnoble in self.bnoble:
             if bnoble.isclicked():
-                print('noble')
+                self.gamelg.shiftturn()
         if self.bdeck1.ishovered():
             print("deck1 is hovered")
         for btier1 in self.btier1:
