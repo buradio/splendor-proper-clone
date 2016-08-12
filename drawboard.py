@@ -67,6 +67,20 @@ PLAYERPANEL_JOKER_ICON = "asset/icon/token-joker.png"
 PLAYERPANEL_PV_ICON_SIZE = (20,20)
 PLAYERPANEL_PV_ICON = "asset/board/playerpanel-vp-icon.png"
 
+#noble
+NOBLE_COSTICON_SIZE = (20,20)
+NOBLE_COSTSET_SIZE = (45,20)
+NOBLE_COSTICONS = ["asset/icon/token-red.png",
+                   "asset/icon/token-green.png",
+                   "asset/icon/token-blue.png",
+                   "asset/icon/token-black.png",
+                   "asset/icon/token-white.png"]
+NOBLE_BG_IMAGE = "asset/board/noble-back.png"
+NOBLE_COSTTEXT_FONT = pygame.font.Font(None,18)
+NOBLE_COSTTEXT_FONT_COLOR = (255,255,255)
+NOBLE_VP_FONT = pygame.font.Font(None,30)
+NOBLE_VP_FONT_COLOR = (0,0,0)
+
 #board
 BOARD_SIZE = (800,600)
 BOARD_BG_IMAGE = "asset/board/board-bg.png"
@@ -192,9 +206,47 @@ def draw_board_token_pool(tokenpool,joker):
     return pool_surface
 
 def draw_noble(noble):
-    #to be implemented
     surface = pygame.Surface((75,75))
-    surface.fill((0,222,222))
+    if noble == None:
+        surface.fill((0,222,222))
+    else:
+        #draw noble
+        y = 3
+        cost_list = noble.cost.asList()
+        bg = pygame.image.load(NOBLE_BG_IMAGE)
+        surface.blit(bg,(0,0))
+        
+        #draw victory points
+        vp_number = noble.victory_points
+        vp_text = str(vp_number)
+        vp_font = NOBLE_VP_FONT
+        vp_render = vp_font.render(vp_text,1,NOBLE_VP_FONT_COLOR)
+        surface.blit(vp_render,(5,5))
+
+        
+        #draw costs
+        for i in range(5):
+            if cost_list[i] > 0:
+                costset_surf = pygame.Surface(NOBLE_COSTSET_SIZE)
+                
+                #draw cost icon
+                costicon_surf = pygame.Surface(NOBLE_COSTICON_SIZE)
+                costicon_image = pygame.image.load(NOBLE_COSTICONS[i])
+
+                #draw cost text
+                costtext_number = str(cost_list[i])
+                costtext_font = NOBLE_COSTTEXT_FONT
+                costtext_render = costtext_font.render(costtext_number,1,
+                                                       NOBLE_COSTTEXT_FONT_COLOR)
+
+                #blits
+                costicon_surf.blit(costicon_image,(0,0))
+                costset_surf.blit(costicon_surf,(0,0))
+                costset_surf.blit(costtext_render,(25,0))
+                surface.blit(costset_surf,(30,y))
+
+                y += 25
+
     return surface
 
 def draw_player_panel(player):
@@ -300,7 +352,7 @@ def draw_board(board,players):
     x = 20
 
     for i in range(5):
-        temp_surf = draw_noble(None)
+        temp_surf = draw_noble(board.nobles[i])
         board_surface.blit(temp_surf,(x,20))
         x += 75+37
 
@@ -363,7 +415,7 @@ class DrawBoardData():
         x = 20
         self.nobles = []
         for i in range(5):
-            temp_surf = draw_noble(None)
+            temp_surf = draw_noble(board.nobles[i])
             self.nobles.append((temp_surf,(x,20)))
             x += 75+37
 

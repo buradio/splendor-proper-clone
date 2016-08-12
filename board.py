@@ -1,4 +1,5 @@
 from objects import *
+import random
 
 def load_deck(filename):
     infile = open(filename)
@@ -50,4 +51,5 @@ class Board:
         self.tokenpool = TokenPool([7,7,7,7,7])
 
         self.joker = 5
-        self.nobles = load_nobles("cardslist/nobles.csv")
+        noble_list = load_nobles("cardslist/nobles.csv")
+        self.nobles = random.sample(noble_list,5)

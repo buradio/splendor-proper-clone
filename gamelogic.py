@@ -6,11 +6,12 @@ class Gamelogic:
 
     def __init__(self):
         self.currentturn = 0
-        self.data = gamedata
         self.isending = False
         gamedata.players[0].isplaying = True
 
     def shiftturn(self):
+        #check for nobles
+        self.check_for_nobles(gamedata.nobles,gamedata.players[self.currentturn])
         #advance turn order
         gamedata.players[self.currentturn].isplaying = False
         self.currentturn += 1
@@ -40,11 +41,12 @@ class Gamelogic:
             card = tierlist[index]
             tierlist[index] = deck.draw_card()
             player.cards_bought.append(card)
+            print("card bought!")
+            #shiftturn
+            self.shiftturn()
         else:
-            #try to buy with joker
-            pass
             #fail buy
-            pass
+            print("failed to buy card")
 
     def player_buy_hold_card(self,player,index):
         cost = player.cards_onhold[index]
@@ -59,35 +61,55 @@ class Gamelogic:
             player.active_tokens -= cost
             player.cards_bought.append(player.cards_onhold[index])
             player.cards_onhold[index] = None
+            self.shiftturn()
         else:
-            #try to buy with joker
+            #buy fail
+            print("buy hold card failed")
             pass
 
 
     def check_for_nobles(self,nobles,player):
-        for noble in nobles:
-            if noble.isplayergetting(player):
-                #move noble to player
-                if player.nobles == []:
-                    player.nobles.append(noble)
-                break
+        if len(player.nobles) == 0:
+            for noble in nobles:
+                if noble.isplayergetting(player):
+                    #move noble to player
+                    if player.nobles == []:
+                        player.nobles.append(noble)
+
+    def player_convert_joker(self,player,colorid):
+        if player.joker_tokens>0:
+            player.joker_tokens -= 1
+            temp_list = player.active_tokens.asList()
+            temp_list[colorid] += 1
+
+            player.active_tokens = TokenPool(temp_list)
+
+        else:
+            print("convert joker failed")
 
     def player_take_three(self,colorids,player):
         take_list = [1 if i in colorids else 0 for i in range(5)]
         take_pool = TokenPool(take_list)
         gamedata.board.tokenpool -= take_pool
         player.active_tokens += take_pool
+        #shift turn
+        self.shiftturn()
 
     def player_take_two(self,colorid,player):
         take_list = [2 if i==colorid else 0 for i in range(5)]
         take_pool = TokenPool(take_list)
         gamedata.board.tokenpool -= take_pool
         player.active_tokens += take_pool
+        self.shiftturn()
 
-    def player_take_card(self,tierlist,deck,index,player):
+    def player_take_card(self,board,tierlist,deck,index,player):
         card = tierlist[index]
         tierlist[index] = None
         player.cards_onhold.append(card)
+        #add joker token if possible
+        if board.joker > 0:
+            board.joker -= 1
+            player.joker_tokens += 1
         #open a new card for card taken
         tierlist[index] = deck.draw_card()
-        pass
+        self.shiftturn()
