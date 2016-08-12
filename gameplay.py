@@ -10,6 +10,7 @@ class GamePlay():
         self.board_surf = DrawBoardData()
 
     def update(self):
+
         #update board and set button
         self.board_surf.update(gamedata.board,gamedata.players)
         self.bnoble = [Button(noble[0],noble[1]) for noble in self.board_surf.nobles]
@@ -21,6 +22,7 @@ class GamePlay():
         self.btier3 = [Button(card[0],card[1]) for card in self.board_surf.tier3]
         self.btokenpool = [Button(token[0],token[1]) for token in self.board_surf.tokenpool]
         self.bjoker = Button(self.board_surf.joker[0],self.board_surf.joker[1])
+
         #click and hover function
         for bnoble in self.bnoble:
             if bnoble.isclicked():
@@ -45,6 +47,7 @@ class GamePlay():
                 pass
         if self.bjoker.isclicked():
             pass
+
         #render
         gamedata.listRender.append((self.board_surf.boardbg,(0,0)))
         gamedata.listRender.append(self.board_surf.deck1)

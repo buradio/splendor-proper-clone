@@ -99,6 +99,8 @@ class Player:
     def __init__(self,name=""):
         self.name = name
 
+        self.isplaying = False
+
         self.active_tokens = TokenPool()
         self.passive_tokens = TokenPool()
         self.joker_tokens = 0
@@ -158,10 +160,10 @@ class Deck:
             self.deck = list(cards)
         else:
             self.deck = []
-        
+
     def cards_in_deck(self):
         return len(self.deck)
-    
+
     def add_card_totop(self,card):
         """add a card to the top of the deck, equivalent to insert_card(0,card)"""
         self.deck.insert(0,card)
@@ -177,7 +179,7 @@ class Deck:
     def add_cards_tobottom(self,cards):
         """add a pile of cards to the bottom of the deck"""
         self.deck = list(cards) + self.deck
-        
+
     def insert_card(self,index,card):
         """insert a card to the deck, similar to list.insert"""
         self.deck.insert(index,card)
@@ -185,14 +187,14 @@ class Deck:
     def insert_card_random(self,card):
         """insert a card into a random place in the deck"""
         self.deck.insert(random.randint(0,len(self.deck)),card)
-        
+
     def top_card(self):
         """returns the top card of the deck"""
         try:
             return self.deck[0]
         except:
-            raise ValueError("top_card error") 
-    
+            raise ValueError("top_card error")
+
     def draw_card(self):
         """removes the top card from the deck and returns it"""
         try:
@@ -200,7 +202,7 @@ class Deck:
             return card_drawn
         except:
             raise ValueError("draw_card error")
-        
+
     def shuffle(self):
         """shuffles the cards in the deck using random.shuffle"""
         random.shuffle(self.deck)

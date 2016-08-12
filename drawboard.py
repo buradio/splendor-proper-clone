@@ -1,5 +1,6 @@
 from data import gamedata
 from objects import *
+from board import Board
 import pygame
 
 pygame.init()
@@ -216,6 +217,12 @@ def draw_player_panel(player):
     name_font = PLAYERPANEL_NAME_FONT
     name_render = name_font.render(player.name,1,PLAYERPANEL_NAME_COLOR)
     playerpanel_surface.blit(name_render,(60,16))
+    #draw marker is playing
+    if player.isplaying:
+        #may be change style later
+        selector_surf = pygame.Surface((10,10))
+        selector_surf.fill((255,240,45))
+        playerpanel_surface.blit(selector_surf,(60+name_render.get_width()+10,20))
 
     x = 60
     for i in range(5):
@@ -422,6 +429,8 @@ class DrawBoardData():
 #testing: create window to blit
 if __name__ == "__main__":
     s = pygame.display.set_mode((850,650))
+    gamedata.board = Board()
+    gamedata.players[2].isplaying=True
     board_surf = draw_board(gamedata.board,gamedata.players)
     s.blit(board_surf,(0,0))
     pygame.display.flip()
