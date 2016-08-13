@@ -1,4 +1,5 @@
 from data import gamedata
+from objects import *
 
 #gamelogic
 
@@ -11,7 +12,7 @@ class Gamelogic:
 
     def shiftturn(self):
         #check for nobles
-        self.check_for_nobles(gamedata.nobles,gamedata.players[self.currentturn])
+        self.check_for_nobles(gamedata.board.nobles,gamedata.players[self.currentturn])
         #advance turn order
         gamedata.players[self.currentturn].isplaying = False
         self.currentturn += 1
@@ -96,7 +97,7 @@ class Gamelogic:
         self.shiftturn()
 
     def player_take_two(self,colorid,player):
-        take_list = [2 if i==colorid else 0 for i in range(5)]
+        take_list = [2 if i in colorid else 0 for i in range(5)]
         take_pool = TokenPool(take_list)
         gamedata.board.tokenpool -= take_pool
         player.active_tokens += take_pool

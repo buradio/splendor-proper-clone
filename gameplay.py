@@ -10,6 +10,7 @@ class GamePlay():
         gamedata.board = Board()
         self.board_surf = DrawBoardData()
         self.gamelg = Gamelogic()
+        self.selected_token = []
 
     def update(self):
 
@@ -24,6 +25,9 @@ class GamePlay():
         self.btier3 = [Button(card[0],card[1]) for card in self.board_surf.tier3]
         self.btokenpool = [Button(token[0],token[1]) for token in self.board_surf.tokenpool]
         self.bjoker = Button(self.board_surf.joker[0],self.board_surf.joker[1])
+        for player in gamedata.players:
+            if player.isplaying:
+                self.player = player
 
         #click and hover function
         for bnoble in self.bnoble:
@@ -44,9 +48,20 @@ class GamePlay():
         for btier3 in self.btier3:
             if btier3.isclicked():
                 pass
-        for btoken in self.btokenpool:
-            if btoken.isclicked():
-                pass
+        for btoken in range(len(self.btokenpool)):
+            if self.btokenpool[btoken].isclicked():
+                if not(len(self.selected_token) == 2 and btoken in self.selected_token):
+                    if gamedata.board.tokenpool.asList()[btoken] > 0:
+                        self.selected_token.append(btoken)
+                if self.selected_token.count(btoken) == 2 and len(self.selected_token) == 2:
+                    if gamedata.board.tokenpool.asList()[btoken] > 3:
+                        self.gamelg.player_take_two(self.selected_token,self.player)
+                        self.selected_token = []
+                    else:
+                        self.selected_token.pop()
+                if len(self.selected_token) == 3:
+                    self.gamelg.player_take_three(self.selected_token,self.player)
+                    self.selected_token = []
         if self.bjoker.isclicked():
             pass
 

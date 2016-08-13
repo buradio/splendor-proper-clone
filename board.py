@@ -27,7 +27,7 @@ def load_nobles(nobles_list):
         a.append(noble)
 
     return a
-    
+
 
 class Board:
     def __init__(self):
