@@ -73,11 +73,11 @@ PLAYERPANEL_HOLDCARD_BG_IMAGE = "asset/board/playerpanel-holdcard-back.png"
 PLAYERPANEL_HOLDCARD_COST_FONT = pygame.font.Font(None,16)
 PLAYERPANEL_HOLDCARD_COST_SIZE = (10,20)
 PLAYERPANEL_HOLDCARD_VP_FONT = pygame.font.Font(None,30)
-PLAYERPANEL_HOLDCARD_ICONS =  ["asset/icon/token-red.png",
-                   "asset/icon/token-green.png",
-                   "asset/icon/token-blue.png",
-                   "asset/icon/token-black.png",
-                   "asset/icon/token-white.png"]
+PLAYERPANEL_HOLDCARD_ICONS =  ["asset/icon/token-red-small.png",
+                   "asset/icon/token-green-small.png",
+                   "asset/icon/token-blue-small.png",
+                   "asset/icon/token-black-small.png",
+                   "asset/icon/token-white-small.png"]
 
 #noble
 NOBLE_COSTICON_SIZE = (20,20)
