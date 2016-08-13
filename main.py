@@ -6,12 +6,12 @@ from menu import Menu
 from gameplay import GamePlay
 
 class SetGame():
-    
+
     #constants
     DISPLAY_SIZE = DISPLAY_WIDTH,DISPLAY_HEIGHT = 800,600
     FPS = 60
     TITLE = "SPLENDOR"
-    
+
     def __init__(self):
         pygame.init()
         #screen and display
@@ -22,7 +22,7 @@ class SetGame():
         #create menu
         gamedata.state = 'menu'
         gamedata.menu = Menu()
-        
+
     def loop(self):
         gamedata.isRunning = True
         while gamedata.isRunning:
@@ -36,6 +36,7 @@ class SetGame():
                     #render phase
                     self.render()
                     gamedata.isClicking = False
+                    gamedata.isRClicking = False
 
     def inputFunc(self):
         #input event
@@ -62,17 +63,17 @@ class SetGame():
             if event.type == pygame.KEYUP:
                 #print(pygame.key.name(event.key))
                 keyUp(event.key)
-    
+
     def render(self):
         for i in range(len(gamedata.listRender)):
             self.screen.blit(gamedata.listRender[i][0],gamedata.listRender[i][1])
         pygame.display.flip()
         gamedata.listRender = []
-        
+
     def quit(self):
         gamedata.isRunning = False
         pygame.quit()
-        
+
 def statemanagement():
     if gamedata.state == 'menu':
         gamedata.menu.update()

@@ -44,9 +44,9 @@ class TokenPool:
         if type(other) != type(self):
             raise TypeError("comparation error")
         else:
-            return (self.red < other.red) and (self.green < other.green) \
-                   and (self.blue < other.blue) and (self.black < other.black) \
-                   and (self.white < other.white)
+            return (self.red <= other.red) and (self.green <= other.green) \
+                   and (self.blue <= other.blue) and (self.black <= other.black) \
+                   and (self.white <= other.white)
 
     def __eq__(self,other):
         if type(other) != type(self):
@@ -118,7 +118,7 @@ class Player:
         self.active_tokens += tokenpool
 
     def add_tokens_to_passive(self,card):
-        self.passive_tokens += card.gembonus_astokenpool()
+        self.passive_tokens += card.carddata.gembonus_astokenpool()
 
     def add_joker(self,joker):
         self.joker_tokens += joker

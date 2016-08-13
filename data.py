@@ -8,6 +8,7 @@ class SetData():
 
         self.isPressing = False
         self.isClicking = False
+        self.isRClicking = False
 
         #listRender.append((Surface,positon)) only
         self.listRender = []

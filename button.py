@@ -20,6 +20,11 @@ class Button():
             return True
         return False
 
+    def isRclicked(self):
+        if self.ishovered() and gamedata.isRClicking:
+            return True
+        return False
+
     def ishovered(self):
         mousepos = pygame.mouse.get_pos()
         if self.position[0]<=mousepos[0]<=self.position[0]+self.width and\
@@ -30,3 +35,9 @@ class Button():
 
     def render(self):
         gamedata.listRender.append((self.surface,self.position))
+
+    def renderselected(self):
+        temp_S = pygame.Surface((10,10))
+        temp_S.fill((255,0,255))
+        self.surface.blit(temp_S,(self.width//2-5,self.height//2-5))
+        self.render()

@@ -219,7 +219,7 @@ def draw_noble(noble):
         cost_list = noble.cost.asList()
         bg = pygame.image.load(NOBLE_BG_IMAGE)
         surface.blit(bg,(0,0))
-        
+
         #draw victory points
         vp_number = noble.victory_points
         vp_text = str(vp_number)
@@ -227,12 +227,12 @@ def draw_noble(noble):
         vp_render = vp_font.render(vp_text,1,NOBLE_VP_FONT_COLOR)
         surface.blit(vp_render,(5,5))
 
-        
+
         #draw costs
         for i in range(5):
             if cost_list[i] > 0:
                 costset_surf = pygame.Surface(NOBLE_COSTSET_SIZE)
-                
+
                 #draw cost icon
                 costicon_surf = pygame.Surface(NOBLE_COSTICON_SIZE)
                 costicon_image = pygame.image.load(NOBLE_COSTICONS[i])
@@ -456,7 +456,7 @@ class DrawBoardData():
         self.tier3 = []
         for card in board.tier3:
             card_surf = draw_card_on_board(card)
-            self.tier2.append((card_surf,(x,370)))
+            self.tier3.append((card_surf,(x,370)))
             x+=90+11
 
         #add .tokenpool

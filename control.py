@@ -12,11 +12,11 @@ def leftclickUp():
     gamedata.isClicking = True
 
 def rightclickUp():
-    pass
+    gamedata.isRClicking = True
 
 def keydDown(key):
     if key == pygame.K_s:
         gamedata.isRunning = False
-        
+
 def keyUp(key):
     pass

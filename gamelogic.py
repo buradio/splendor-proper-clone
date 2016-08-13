@@ -42,6 +42,7 @@ class Gamelogic:
             card = tierlist[index]
             tierlist[index] = deck.draw_card()
             player.cards_bought.append(card)
+            player.add_tokens_to_passive(card)
             print("card bought!")
             #shiftturn
             self.shiftturn()

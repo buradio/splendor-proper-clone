@@ -11,6 +11,7 @@ class GamePlay():
         self.board_surf = DrawBoardData()
         self.gamelg = Gamelogic()
         self.selected_token = []
+        self.selected_joker = False
 
     def update(self):
 
@@ -29,28 +30,47 @@ class GamePlay():
             if player.isplaying:
                 self.player = player
 
-        #click and hover function
+    #click and hover function
+
         for bnoble in self.bnoble:
             if bnoble.isclicked():
-                self.gamelg.shiftturn()
+                pass
+
         if self.bdeck1.ishovered():
             print("deck1 is hovered")
-        for btier1 in self.btier1:
-            if btier1.isclicked():
-                pass
+        for card in range(len(self.btier1)):
+            if self.btier1[card].isclicked():
+                print('tier1 '+str(card))
+                if self.selected_joker:
+                    self.gamelg.player_take_card(gamedata.board,gamedata.board.tier1,gamedata.board.deck1,card,self.player)
+                    self.selected_joker = False
+                else:
+                    self.gamelg.player_buy_card(self.player,gamedata.board.deck1,gamedata.board.tier1,card)
         if self.bdeck2.ishovered():
             print("deck2 is hovered")
-        for btier2 in self.btier2:
-            if btier2.isclicked():
-                pass
+        for card in range(len(self.btier2)):
+            if self.btier2[card].isclicked():
+                print('tier2 '+str(card))
+                if self.selected_joker:
+                    self.gamelg.player_take_card(gamedata.board,gamedata.board.tier2,gamedata.board.deck2,card,self.player)
+                    self.selected_joker = False
+                else:
+                    self.gamelg.player_buy_card(self.player,gamedata.board.deck2,gamedata.board.tier2,card)
         if self.bdeck3.ishovered():
             print("deck3 is hovered")
-        for btier3 in self.btier3:
-            if btier3.isclicked():
-                pass
+        for card in range(len(self.btier3)):
+            if self.btier3[card].isclicked():
+                print('tier3 '+str(card))
+                if self.selected_joker:
+                    self.gamelg.player_take_card(gamedata.board,gamedata.board.tier3,gamedata.board.deck3,card,self.player)
+                    self.selected_joker = False
+                else:
+                    self.gamelg.player_buy_card(self.player,gamedata.board.deck3,gamedata.board.tier3,card)
+
+        #click token
         for btoken in range(len(self.btokenpool)):
             if self.btokenpool[btoken].isclicked():
-                if not(len(self.selected_token) == 2 and btoken in self.selected_token):
+                if not(len(self.selected_token) == 2 and btoken in self.selected_token) and not(self.selected_joker):
                     if gamedata.board.tokenpool.asList()[btoken] > 0:
                         self.selected_token.append(btoken)
                 if self.selected_token.count(btoken) == 2 and len(self.selected_token) == 2:
@@ -62,8 +82,15 @@ class GamePlay():
                 if len(self.selected_token) == 3:
                     self.gamelg.player_take_three(self.selected_token,self.player)
                     self.selected_token = []
+            if self.btokenpool[btoken].isRclicked():
+                if btoken in self.selected_token:
+                    self.selected_token.remove(btoken)
+        #click joker
         if self.bjoker.isclicked():
-            pass
+            if self.selected_token == []:
+                self.selected_joker = True
+        if self.bjoker.isRclicked():
+            self.selected_joker = False
 
         #render
         gamedata.listRender.append((self.board_surf.boardbg,(0,0)))
@@ -80,6 +107,12 @@ class GamePlay():
             btier2.render()
         for btier3 in self.btier3:
             btier3.render()
-        for btoken in self.btokenpool:
-            btoken.render()
-        self.bjoker.render()
+        for btoken in range(len(self.btokenpool)):
+            if btoken in self.selected_token:
+                self.btokenpool[btoken].renderselected()
+            else:
+                self.btokenpool[btoken].render()
+        if self.selected_joker:
+            self.bjoker.renderselected()
+        else:
+            self.bjoker.render()
