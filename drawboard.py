@@ -59,13 +59,25 @@ PLAYERPANEL_ICONS = ["asset/icon/token-red.png",
                    "asset/icon/token-black.png",
                    "asset/icon/token-white.png"]
 PLAYERPANEL_ICON_SIZE = (20,20)
+PLAYERPANEL_TOKENPANEL_SIZE = (20,70)
 PLAYERPANEL_TOKEN_FONT = pygame.font.Font(None, 26)
 PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR = (255,255,255)
 PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR = (150,150,150)
+PLAYERPANEL_JOKER_SIZE = (45,20)
 PLAYERPANEL_JOKER_ICON_SIZE = (20,20)
 PLAYERPANEL_JOKER_ICON = "asset/icon/token-joker.png"
 PLAYERPANEL_PV_ICON_SIZE = (20,20)
 PLAYERPANEL_PV_ICON = "asset/board/playerpanel-vp-icon.png"
+PLAYERPANEL_HOLDCARD_SIZE = (40,40)
+PLAYERPANEL_HOLDCARD_BG_IMAGE = "asset/board/playerpanel-holdcard-back.png"
+PLAYERPANEL_HOLDCARD_COST_FONT = pygame.font.Font(None,16)
+PLAYERPANEL_HOLDCARD_COST_SIZE = (10,20)
+PLAYERPANEL_HOLDCARD_VP_FONT = pygame.font.Font(None,30)
+PLAYERPANEL_HOLDCARD_ICONS =  ["asset/icon/token-red.png",
+                   "asset/icon/token-green.png",
+                   "asset/icon/token-blue.png",
+                   "asset/icon/token-black.png",
+                   "asset/icon/token-white.png"]
 
 #noble
 NOBLE_COSTICON_SIZE = (20,20)
@@ -261,9 +273,8 @@ def draw_player_panel(player):
     #draw cards on hold
     y = 5
     for card in player.cards_onhold:
-        temp_surf = pygame.Surface(PLAYERPANEL_CARD_SIZE)
+        temp_surf = playerpanel_draw_holdcard(card)
         #to be implemented
-        temp_surf.fill((0,200,200))
 
         playerpanel_surface.blit(temp_surf,(0,y))
 
@@ -403,7 +414,7 @@ def draw_board(board,players):
 
     return board_surface
 
-class DrawBoardData():
+class DrawBoardData:
     def __init__(self):
         self.nobles = None
         self.deck1 = None
@@ -475,10 +486,153 @@ class DrawBoardData():
         y=0
         self.players = []
         for player in players:
-            pl_surf = draw_player_panel(player)
+            playerdata = DrawPlayerPanel(player,(600,y))
             self.players.append((pl_surf,(600,y)))
             y+=150
 
+def playerpanel_draw_joker(player):
+    joker_surf = pygame.Surface(PLAYERPANEL_JOKER_SIZE)
+
+    #draw joker icon
+    joker_icon_surf = pygame.Surface(PLAYERPANEL_JOKER_ICON_SIZE)
+    joker_icon_img = pygame.image.load(PLAYERPANEL_JOKER_ICON)
+    joker_icon_surf.blit(joker_icon_img,(0,0))
+
+    #draw joker number
+    joker_number_surf = pygame.Surface(PLAYERPANEL_JOKER_ICON_SIZE)
+    joker_num = player.joker_tokens
+    joker_num_text = str(joker_num)
+    joker_num_font = PLAYERPANEL_TOKEN_FONT
+    joker_num_render = joker_num_font.render(joker_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
+    joker_surf.blit(joker_num_render,(25,0))
+
+    return joker_surf
+
+def playerpanel_draw_token(colorid,player):
+    token_surf = pygame.Surface(PLAYERPANEL_TOKENPANEL_SIZE)
+
+    #draw token icon
+    tokenicon_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
+    tokenicon_img = pygame.image.load(PLAYERPANEL_ICONS[colorid])
+    tokenicon_surf.blit(tokenicon_img,(0,0))
+
+    #draw active token number
+    token_num_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
+    token_num = player.active_tokens.asList()[colorid]
+    token_num_text = str(token_num)
+    token_num_font = PLAYERPANEL_TOKEN_FONT
+    token_num_render = token_num_font.render(token_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
+    token_surf.blit(token_num_render,(25,0))
+
+    #draw passive token number
+    token_num_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
+    token_num = player.passive_tokens.asList()[colorid]
+    token_num_text = str(token_num)
+    token_num_font = PLAYERPANEL_TOKEN_FONT
+    token_num_render = token_num_font.render(token_num_text,1,PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR)
+    token_surf.blit(token_num_render,(50,0))
+
+    return token_surf
+
+def playerpanel_draw_pv(player):
+    pv_surf = pygame.Surface(PLAYERPANEL_JOKER_SIZE)
+
+    #draw joker icon
+    pv_icon_surf = pygame.Surface(PLAYERPANEL_PV_ICON_SIZE)
+    pv_icon_img = pygame.image.load(PLAYERPANEL_PV_ICON)
+    pv_icon_surf.blit(joker_icon_img,(0,0))
+
+    #draw joker number
+    pv_number_surf = pygame.Surface(PLAYERPANEL_PV_ICON_SIZE)
+    pv_num = player.victory_points
+    pv_num_text = str(pv_num)
+    pv_num_font = PLAYERPANEL_TOKEN_FONT
+    pv_num_render = pv_num_font.render(pv_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
+    pv_surf.blit(pv_num_render,(25,0))
+
+    return pv_surf
+
+def playerpanel_draw_holdcard(card):
+    holdcard_surf = pygame.Surface(PLAYERPANEL_HOLDCARD_SIZE)
+
+    #bg
+    holdcard_bg = pygame.image.load(PLAYERPANEL_HOLDCARD_BG_IMAGE)
+    holdcard_surf.blit(holdcard_bg,(0,0))
+
+    #costs
+    x = 0
+    cost_list = card.carddata.cost.asList()
+    for i in range(5):
+        if cost_list[i] > 0:
+            costicon_surf = pygame.Surface(PLAYERPANEL_HOLDCARD_COST_SIZE)
+            costicon_image = pygame.image.load(PLAYERPANEL_HOLDCARD_ICONS[i])
+            #costnumber
+            costicon_number = str(cost_list[i])
+            costicon_font = PLAYERPANEL_HOLDCARD_COST_FONT
+            costicon_render = costicon_font.render(costicon_number,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
+            #blits
+            costicon_surf.blit(costicon_image,(0,0))
+            costicon_surf.blit(costicon_render,(0,10))
+
+            holdcard_surf.blit(costicon_surf,(x,0))
+            x+=10
+    #vp
+    vp_font = PLAYERPANEL_HOLDCARD_VP_FONT
+    vp_text = str(card.carddata.victory_points)
+    vp_render = vp_font.render(vp_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
+    holdcard_surf.blit(vp_render,(22,22))
+
+    #passive gem
+    passive_gem_type = card.carddata.gembonus_asid()
+    passive_gem_icon = PLAYERPANEL_ICONS[passive_gem_type]
+    passive_gem_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
+    passive_gem_img = pygame.image.load(passive_gem_icon)
+    passive_gem_surf.blit(passive_gem_img,(0,0))
+    holdcard_surf.blit(passive_gem_surf,(0,20))
+
+    return holdcard_surf
+
+
+
+class DrawPlayerPanel:
+    def __init__(self,player,position):
+        bg_surf = pygame.Surface(PLAYERPANEL_SIZE)
+        bg_image = pygame.image.load(PLAYERPANEL_BG_IMAGE)
+        bg_surf.blit(bg_image,(0,0))
+
+        self.bg = (bg_surf,position)
+        self.token = []
+        self.holdcards=[]
+        self.joker = None
+        self.pv = None
+        self.playerdata = player
+        self.position = position
+
+    def update(self):
+        #joker
+        joker_surf = playerpanel_draw_joker(self.playerdata)
+        self.joker = (joker_surf,(self.position[0]+60,self.position[1]+125))
+
+        #token
+        self.token = []
+        x = 60
+        y = 45
+        for color in range(5):
+            token_surf = playerpanel_draw_token(color,self.playerdata)
+            self.token.append((token_surf,(self.position[0]+x,self.position[1]+y)))
+            x += 25
+
+        #pv
+        pv_surf = playerpanel_draw_pv(self.playerdata)
+        self.pv = (pv_surf,(self.position[0]+115,self.position[1]+125))
+
+        #hold cards
+        self.holdcards = []
+        y = 5
+        for card in self.playerdata.cards_onhold:
+            holdcard_surf = playerpanel_draw_holdcard(card)
+            self.holdcards.append((holdcard_surf,(0,y)))
+            y+=50
 
 
 
@@ -486,7 +640,7 @@ class DrawBoardData():
 if __name__ == "__main__":
     s = pygame.display.set_mode((800,600))
     gamedata.board = Board()
-    gamedata.players[0].cards_onhold.append(gamedata.board.deck1.draw_card())
+    gamedata.players[0].cards_onhold.append(gamedata.board.deck3.draw_card())
     gamedata.players[0].cards_bought.append(gamedata.board.deck3.draw_card())
     gamedata.players[2].isplaying=True
     board_surf = draw_board(gamedata.board,gamedata.players)
