@@ -43,7 +43,9 @@ class Gamelogic:
             tierlist[index] = deck.draw_card()
             player.cards_bought.append(card)
             player.add_tokens_to_passive(card)
-            print("card bought!")
+
+            #log
+            print(player.name+" bought "+ repr(card) + "(from board).")
             #shiftturn
             self.shiftturn()
         else:
@@ -61,8 +63,12 @@ class Gamelogic:
         if player.active_tokens > cost or player.activetokens.asList() > cost.asList():
             #buy card
             player.active_tokens -= cost
-            player.cards_bought.append(player.cards_onhold[index])
+            card = player.cards_onhold[index]
+            player.cards_bought.append(card)
             player.cards_onhold.pop(index)
+
+            #log
+            print(player.name + " bought " + repr(card) + "(was on hold)")
             self.shiftturn()
         else:
             #buy fail
@@ -77,6 +83,7 @@ class Gamelogic:
                     #move noble to player
                     if player.nobles == []:
                         player.nobles.append(noble)
+                        break
 
     def player_convert_joker(self,player,colorid):
         if player.joker_tokens>0:
@@ -86,6 +93,7 @@ class Gamelogic:
 
             player.active_tokens = TokenPool(temp_list)
 
+            print(player.name + " converted joker to colorid: " + colorid)
         else:
             print("convert joker failed")
 
@@ -94,6 +102,9 @@ class Gamelogic:
         take_pool = TokenPool(take_list)
         gamedata.board.tokenpool -= take_pool
         player.active_tokens += take_pool
+
+        #log
+        print(player.name + " took " + take_pool)
         #shift turn
         self.shiftturn()
 
@@ -102,6 +113,10 @@ class Gamelogic:
         take_pool = TokenPool(take_list)
         gamedata.board.tokenpool -= take_pool
         player.active_tokens += take_pool
+
+        #log
+        print(player.name + " took " + take_pool)
+        #shift turn
         self.shiftturn()
 
     def player_take_card(self,board,tierlist,deck,index,player):
@@ -114,4 +129,7 @@ class Gamelogic:
             player.joker_tokens += 1
         #open a new card for card taken
         tierlist[index] = deck.draw_card()
+
+        #log
+        print(player.name + " hold " + repr(card))
         self.shiftturn()

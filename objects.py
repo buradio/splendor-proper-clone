@@ -56,6 +56,10 @@ class TokenPool:
                    and (self.green==other.green) and (self.black==other.black) \
                    and (self.white==other.white)
 
+    def __repr__(self):
+        return str(self.red)+"r"+str(self.green)+"g"+str(self.blue)+"b"+ \
+               str(self.black)+"k"+str(self.white)+"w"
+
 class CardData:
     def __init__(self,costdata,victory_points,gembonus_string):
         self.victory_points = victory_points
@@ -85,6 +89,10 @@ class Card:
 
     def flip(self):
         self.isfacedown = not self.isfacedown
+
+    def __repr__(self):
+        return "Card:"+ str(self.carddata.victory_points)+"vp "+"cost:"+repr(self.carddata.cost)
+        +self.carddata.gembonus
 
 class Noble:
     def __init__(self,victory_points,cost):
