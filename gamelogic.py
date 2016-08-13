@@ -62,7 +62,7 @@ class Gamelogic:
             #buy card
             player.active_tokens -= cost
             player.cards_bought.append(player.cards_onhold[index])
-            player.cards_onhold[index] = None
+            player.cards_onhold.pop(index)
             self.shiftturn()
         else:
             #buy fail

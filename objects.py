@@ -193,7 +193,7 @@ class Deck:
         try:
             return self.deck[0]
         except:
-            raise ValueError("top_card error")
+            return None
 
     def draw_card(self):
         """removes the top card from the deck and returns it"""
@@ -201,7 +201,6 @@ class Deck:
             card_drawn = self.deck.pop(0)
             return card_drawn
         except:
-            raise ValueError("draw_card error")
             return None
 
     def shuffle(self):
