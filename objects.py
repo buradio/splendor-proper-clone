@@ -202,6 +202,7 @@ class Deck:
             return card_drawn
         except:
             raise ValueError("draw_card error")
+            return None
 
     def shuffle(self):
         """shuffles the cards in the deck using random.shuffle"""

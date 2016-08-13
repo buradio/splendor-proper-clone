@@ -76,7 +76,7 @@ NOBLE_COSTICONS = ["asset/icon/token-red.png",
                    "asset/icon/token-black.png",
                    "asset/icon/token-white.png"]
 NOBLE_BG_IMAGE = "asset/board/noble-back.png"
-NOBLE_COSTTEXT_FONT = pygame.font.Font(None,18)
+NOBLE_COSTTEXT_FONT = pygame.font.Font(None,28)
 NOBLE_COSTTEXT_FONT_COLOR = (255,255,255)
 NOBLE_VP_FONT = pygame.font.Font(None,30)
 NOBLE_VP_FONT_COLOR = (0,0,0)
@@ -87,54 +87,58 @@ BOARD_BG_IMAGE = "asset/board/board-bg.png"
 
 def draw_card_on_board(card):
     surface = pygame.Surface(CARD_ON_BOARD_SIZE)
+    if card != None:
+        #draw faceart
+        faceart = pygame.image.load(card.faceart)
+        surface.blit(faceart,(0,0))
 
-    #draw faceart
-    faceart = pygame.image.load(card.faceart)
-    surface.blit(faceart,(0,0))
+        #draw victory points
+        if card.carddata.victory_points != 0:
+            victory_points = card.carddata.victory_points
+            vp_text = str(victory_points)
+            vp_font = CARD_ON_BOARD_VICTORY_POINTS_FONT
+            vp_render = vp_font.render(vp_text,1,CARD_ON_BOARD_VICTORY_POINTS_COLOR)
+            surface.blit(vp_render,(60,45))
 
-    #draw victory points
-    if card.carddata.victory_points != 0:
-        victory_points = card.carddata.victory_points
-        vp_text = str(victory_points)
-        vp_font = CARD_ON_BOARD_VICTORY_POINTS_FONT
-        vp_render = vp_font.render(vp_text,1,CARD_ON_BOARD_VICTORY_POINTS_COLOR)
-        surface.blit(vp_render,(60,45))
+        #draw gembonus
+        #to be implemented
+        gembonus_surf = pygame.Surface((30,30))
+        gembonus_icon_id = card.carddata.gembonus_asid()
+        gembonus_icon = pygame.image.load(CARD_GEMBONUS_ICONS[gembonus_icon_id])
+        gembonus_surf.blit(gembonus_icon,(0,0))
+        surface.blit(gembonus_surf,(55,5))
 
-    #draw gembonus
-    #to be implemented
-    gembonus_surf = pygame.Surface((30,30))
-    gembonus_icon_id = card.carddata.gembonus_asid()
-    gembonus_icon = pygame.image.load(CARD_GEMBONUS_ICONS[gembonus_icon_id])
-    gembonus_surf.blit(gembonus_icon,(0,0))
-    surface.blit(gembonus_surf,(55,5))
+        #draw costs
+        costs = card.carddata.cost.asList()
+        draw_list = []
+        #color: r,g,b,k,w
+        for i in range(5):
+            if costs[i]!=0:
+                temp_surf = pygame.Surface(CARD_COST_SIZE)
 
-    #draw costs
-    costs = card.carddata.cost.asList()
-    draw_list = []
-    #color: r,g,b,k,w
-    for i in range(5):
-        if costs[i]!=0:
-            temp_surf = pygame.Surface(CARD_COST_SIZE)
+                #draw icon
+                icon_surf = pygame.Surface(CARD_COST_ICON_SIZE)
+                icon_img = pygame.image.load(CARD_COST_ICONS[i])
+                icon_surf.blit(icon_img,(0,0))
 
-            #draw icon
-            icon_surf = pygame.Surface(CARD_COST_ICON_SIZE)
-            icon_img = pygame.image.load(CARD_COST_ICONS[i])
-            icon_surf.blit(icon_img,(0,0))
+                #draw cost text
+                cost_text = str(costs[i])
+                cost_font = CARD_COST_FONT
+                cost_render = cost_font.render(cost_text,1,COST_TEXT_COLOR)
 
-            #draw cost text
-            cost_text = str(costs[i])
-            cost_font = CARD_COST_FONT
-            cost_render = cost_font.render(cost_text,1,COST_TEXT_COLOR)
+                temp_surf.blit(icon_surf, (0,0))
+                temp_surf.blit(cost_render, (15,0))
 
-            temp_surf.blit(icon_surf, (0,0))
-            temp_surf.blit(cost_render, (15,0))
+                draw_list.append(temp_surf)
 
-            draw_list.append(temp_surf)
+        y = 5
+        for surf in draw_list:
+            surface.blit(surf,(5,y))
+            y+=15
 
-    y = 5
-    for surf in draw_list:
-        surface.blit(surf,(5,y))
-        y+=15
+    else:
+        #blank card slot
+        surface.fill((100,100,100))
 
 
     return surface
@@ -242,7 +246,7 @@ def draw_noble(noble):
                 #blits
                 costicon_surf.blit(costicon_image,(0,0))
                 costset_surf.blit(costicon_surf,(0,0))
-                costset_surf.blit(costtext_render,(25,0))
+                costset_surf.blit(costtext_render,(28,0))
                 surface.blit(costset_surf,(30,y))
 
                 y += 25
@@ -290,7 +294,7 @@ def draw_player_panel(player):
         anum_font = PLAYERPANEL_TOKEN_FONT
         anum_render = anum_font.render(anum_text,1,
                                        PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-        anum_surf.blit(anum_render,(0,0))
+        anum_surf.blit(anum_render,(4,0))
 
         #draw passive token number
         pnum_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
@@ -299,7 +303,7 @@ def draw_player_panel(player):
         pnum_font = PLAYERPANEL_TOKEN_FONT
         pnum_render = pnum_font.render(pnum_text,1,
                                        PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR)
-        pnum_surf.blit(pnum_render,(0,0))
+        pnum_surf.blit(pnum_render,(4,0))
 
         #blits
         playerpanel_surface.blit(icon_surf,(x,45))
@@ -321,7 +325,7 @@ def draw_player_panel(player):
     jnum_font = PLAYERPANEL_TOKEN_FONT
     jnum_render = jnum_font.render(jnum_text,1,
                                    PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-    jnum_surf.blit(jnum_render,(0,0))
+    jnum_surf.blit(jnum_render,(4,0))
     playerpanel_surface.blit(jnum_surf,(85,125))
 
     #draw victory points icon
@@ -337,7 +341,7 @@ def draw_player_panel(player):
     pvnum_font = PLAYERPANEL_TOKEN_FONT
     pvnum_render = pvnum_font.render(pvnum_text,1,
                                    PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-    pvnum_surf.blit(pvnum_render,(0,0))
+    pvnum_surf.blit(pvnum_render,(4,0))
     playerpanel_surface.blit(pvnum_surf,(160,125))
 
     return playerpanel_surface
@@ -480,8 +484,10 @@ class DrawBoardData():
 
 #testing: create window to blit
 if __name__ == "__main__":
-    s = pygame.display.set_mode((850,650))
+    s = pygame.display.set_mode((800,600))
     gamedata.board = Board()
+    gamedata.players[0].cards_onhold.append(gamedata.board.deck1.draw_card())
+    gamedata.players[0].cards_bought.append(gamedata.board.deck3.draw_card())
     gamedata.players[2].isplaying=True
     board_surf = draw_board(gamedata.board,gamedata.players)
     s.blit(board_surf,(0,0))
