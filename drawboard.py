@@ -487,70 +487,70 @@ class DrawBoardData:
         self.players = []
         for player in players:
             playerdata = DrawPlayerPanel(player,(600,y))
-            self.players.append((pl_surf,(600,y)))
+            playerdata.update()
+            self.players.append((playerdata,(600,y)))
             y+=150
 
-def playerpanel_draw_joker(player):
-    joker_surf = pygame.Surface(PLAYERPANEL_JOKER_SIZE)
 
+def playerpanel_draw_joker_icon(player):
     #draw joker icon
     joker_icon_surf = pygame.Surface(PLAYERPANEL_JOKER_ICON_SIZE)
     joker_icon_img = pygame.image.load(PLAYERPANEL_JOKER_ICON)
     joker_icon_surf.blit(joker_icon_img,(0,0))
+    return joker_icon_surf
 
+def playerpanel_draw_joker_num(player):
     #draw joker number
     joker_number_surf = pygame.Surface(PLAYERPANEL_JOKER_ICON_SIZE)
     joker_num = player.joker_tokens
     joker_num_text = str(joker_num)
     joker_num_font = PLAYERPANEL_TOKEN_FONT
     joker_num_render = joker_num_font.render(joker_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-    joker_surf.blit(joker_num_render,(25,0))
+    joker_number_surf.blit(joker_num_render,(4,0))
+    return joker_number_surf
 
-    return joker_surf
-
-def playerpanel_draw_token(colorid,player):
-    token_surf = pygame.Surface(PLAYERPANEL_TOKENPANEL_SIZE)
-
+def playerpanel_draw_token_icon(colorid,player):
     #draw token icon
     tokenicon_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
     tokenicon_img = pygame.image.load(PLAYERPANEL_ICONS[colorid])
     tokenicon_surf.blit(tokenicon_img,(0,0))
+    return tokenicon_surf
 
+def playerpanel_draw_token_anum(colorid,player):
     #draw active token number
     token_num_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
     token_num = player.active_tokens.asList()[colorid]
     token_num_text = str(token_num)
     token_num_font = PLAYERPANEL_TOKEN_FONT
     token_num_render = token_num_font.render(token_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-    token_surf.blit(token_num_render,(25,0))
+    token_num_surf.blit(token_num_render,(4,0))
+    return token_num_surf
 
+def playerpanel_draw_token_pnum(colorid,player):
     #draw passive token number
     token_num_surf = pygame.Surface(PLAYERPANEL_ICON_SIZE)
     token_num = player.passive_tokens.asList()[colorid]
     token_num_text = str(token_num)
     token_num_font = PLAYERPANEL_TOKEN_FONT
     token_num_render = token_num_font.render(token_num_text,1,PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR)
-    token_surf.blit(token_num_render,(50,0))
+    token_num_surf.blit(token_num_render,(4,0))
+    return token_num_surf
 
-    return token_surf
-
-def playerpanel_draw_pv(player):
-    pv_surf = pygame.Surface(PLAYERPANEL_JOKER_SIZE)
-
-    #draw joker icon
-    pv_icon_surf = pygame.Surface(PLAYERPANEL_PV_ICON_SIZE)
-    pv_icon_img = pygame.image.load(PLAYERPANEL_PV_ICON)
-    pv_icon_surf.blit(joker_icon_img,(0,0))
-
-    #draw joker number
+def playerpanel_draw_pv_score(player):
+    #draw pv number
     pv_number_surf = pygame.Surface(PLAYERPANEL_PV_ICON_SIZE)
-    pv_num = player.victory_points
-    pv_num_text = str(pv_num)
+    pv_num_text = str(player.total_victory_points())
     pv_num_font = PLAYERPANEL_TOKEN_FONT
     pv_num_render = pv_num_font.render(pv_num_text,1,PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR)
-    pv_surf.blit(pv_num_render,(25,0))
+    pv_number_surf.blit(pv_num_render,(4,0))
+    return pv_number_surf
 
-    return pv_surf
+def playerpanel_draw_pv_icon(player):
+    #draw pv icon
+    pv_icon_surf = pygame.Surface(PLAYERPANEL_PV_ICON_SIZE)
+    pv_icon_img = pygame.image.load(PLAYERPANEL_PV_ICON)
+    pv_icon_surf.blit(pv_icon_img,(0,0))
+    return pv_icon_surf
 
 def playerpanel_draw_holdcard(card):
     holdcard_surf = pygame.Surface(PLAYERPANEL_HOLDCARD_SIZE)
@@ -599,39 +599,60 @@ class DrawPlayerPanel:
         bg_surf = pygame.Surface(PLAYERPANEL_SIZE)
         bg_image = pygame.image.load(PLAYERPANEL_BG_IMAGE)
         bg_surf.blit(bg_image,(0,0))
+        #draw player name
+        name_font = PLAYERPANEL_NAME_FONT
+        name_render = name_font.render(player.name,1,PLAYERPANEL_NAME_COLOR)
+        bg_surf.blit(name_render,(60,16))
+        #draw marker is playing
+        if player.isplaying:
+            #may be change style later
+            selector_surf = pygame.Surface((10,10))
+            selector_surf.fill((255,240,45))
+            bg_surf.blit(selector_surf,(60+name_render.get_width()+10,20))
+
 
         self.bg = (bg_surf,position)
         self.token = []
         self.holdcards=[]
-        self.joker = None
-        self.pv = None
+        self.jokericon = None
+        self.jokerscore = None
+        self.pvicon = None
+        self.pvscore = None
         self.playerdata = player
         self.position = position
 
     def update(self):
         #joker
-        joker_surf = playerpanel_draw_joker(self.playerdata)
-        self.joker = (joker_surf,(self.position[0]+60,self.position[1]+125))
+        joker_surf_icon = playerpanel_draw_joker_icon(self.playerdata)
+        self.jokericon = (joker_surf_icon,(self.position[0]+60,self.position[1]+125))
+        joker_surf_num = playerpanel_draw_joker_num(self.playerdata)
+        self.jokerscore = (joker_surf_num,(self.position[0]+85,self.position[1]+125))
 
         #token
         self.token = []
         x = 60
         y = 45
         for color in range(5):
-            token_surf = playerpanel_draw_token(color,self.playerdata)
-            self.token.append((token_surf,(self.position[0]+x,self.position[1]+y)))
+            token_surf_icon = playerpanel_draw_token_icon(color,self.playerdata)
+            token_surf_anum = playerpanel_draw_token_anum(color,self.playerdata)
+            token_surf_pnum = playerpanel_draw_token_pnum(color,self.playerdata)
+            self.token.append([(token_surf_icon,(self.position[0]+x,self.position[1]+y)),
+                                (token_surf_anum,(self.position[0]+x,self.position[1]+y+25)),
+                                (token_surf_pnum,(self.position[0]+x,self.position[1]+y+50))])
             x += 25
 
         #pv
-        pv_surf = playerpanel_draw_pv(self.playerdata)
-        self.pv = (pv_surf,(self.position[0]+115,self.position[1]+125))
+        pv_surf_icon = playerpanel_draw_pv_icon(self.playerdata)
+        self.pvicon = (pv_surf_icon,(self.position[0]+135,self.position[1]+125))
+        pv_surf_score = playerpanel_draw_pv_score(self.playerdata)
+        self.pvscore = (pv_surf_score,(self.position[0]+160,self.position[1]+125))
 
         #hold cards
         self.holdcards = []
         y = 5
         for card in self.playerdata.cards_onhold:
             holdcard_surf = playerpanel_draw_holdcard(card)
-            self.holdcards.append((holdcard_surf,(0,y)))
+            self.holdcards.append((holdcard_surf,(self.position[0]+5,self.position[1]+y)))
             y+=50
 
 

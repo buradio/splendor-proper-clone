@@ -98,7 +98,16 @@ class GamePlay():
         gamedata.listRender.append(self.board_surf.deck2)
         gamedata.listRender.append(self.board_surf.deck3)
         for player in self.board_surf.players:
-            gamedata.listRender.append(player)
+            gamedata.listRender.append(player[0].bg)
+            for token in player[0].token:
+                for surf in token:
+                    gamedata.listRender.append(surf)
+            for holdcard in player[0].holdcards:
+                gamedata.listRender.append(holdcard)
+            gamedata.listRender.append(player[0].jokericon)
+            gamedata.listRender.append(player[0].jokerscore)
+            gamedata.listRender.append(player[0].pvicon)
+            gamedata.listRender.append(player[0].pvscore)
         for bnoble in self.bnoble:
             bnoble.render()
         for btier1 in self.btier1:
