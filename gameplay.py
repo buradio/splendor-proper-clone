@@ -26,11 +26,26 @@ class GamePlay():
         self.btier3 = [Button(card[0],card[1]) for card in self.board_surf.tier3]
         self.btokenpool = [Button(token[0],token[1]) for token in self.board_surf.tokenpool]
         self.bjoker = Button(self.board_surf.joker[0],self.board_surf.joker[1])
-        for player in gamedata.players:
-            if player.isplaying:
-                self.player = player
+
+        self.bplayercard = [[Button(card[0],card[1]) for card in player[0].holdcards] for player in self.board_surf.players]
+        self.bplayertoken = [[Button(token[0][0],token[0][1]) for token in player[0].token] for player in self.board_surf.players]
+        self.bplayerjoker = [Button(player[0].jokericon[0],player[0].jokericon[1]) for player in self.board_surf.players]
+
+        for player in range(len(gamedata.players)):
+            if gamedata.players[player].isplaying:
+                self.player = gamedata.players[player]
+                self.playernum = player
 
     #click and hover function
+
+        for card in range(len(self.bplayercard[self.playernum])):
+            if self.bplayercard[self.playernum][card].isclicked():
+                self.gamelg.player_buy_hold_card(self.player,card)
+        for token in range(len(self.bplayertoken[self.playernum])):
+            if self.bplayertoken[self.playernum][token].isclicked():
+                self.gamelg.player_convert_joker(self.player,token)
+        if self.bplayerjoker[self.playernum].isclicked():
+            self.gamelg.player_reset_joker(self.player)
 
         for bnoble in self.bnoble:
             if bnoble.isclicked():

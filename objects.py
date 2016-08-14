@@ -116,7 +116,7 @@ class Player:
         self.active_tokens = TokenPool()
         self.passive_tokens = TokenPool()
         self.joker_tokens = 0
-
+        self.joker_inuse = []
         self.cards_onhold = []
 
         self.cards_bought = []

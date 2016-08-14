@@ -66,7 +66,7 @@ class Gamelogic:
             card = player.cards_onhold[index]
             player.cards_bought.append(card)
             player.cards_onhold.pop(index)
-
+            player.add_tokens_to_passive(card)
             #log
             print(player.name + " bought " + repr(card) + "(was on hold)")
             self.shiftturn()
@@ -88,14 +88,25 @@ class Gamelogic:
     def player_convert_joker(self,player,colorid):
         if player.joker_tokens>0:
             player.joker_tokens -= 1
+            player.joker_inuse.append(colorid)
             temp_list = player.active_tokens.asList()
             temp_list[colorid] += 1
 
             player.active_tokens = TokenPool(temp_list)
 
-            print(player.name + " converted joker to colorid: " + colorid)
+            print(player.name + " converted joker to colorid: " + str(colorid))
         else:
             print("convert joker failed")
+
+    def player_reset_joker(self,player):
+        temp_list = player.active_tokens.asList()
+        player.joker_tokens += len(player.joker_inuse)
+        for colorid in player.joker_inuse:
+            temp_list[colorid] -= 1
+        player.active_tokens = TokenPool(temp_list)
+        #log
+        print(player.name+" reseted joker "+" ".join([str(temp) for temp in player.joker_inuse]))
+        player.joker_inuse = []
 
     def player_take_three(self,colorids,player):
         take_list = [1 if i in colorids else 0 for i in range(5)]
