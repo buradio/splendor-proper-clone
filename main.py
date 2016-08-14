@@ -79,6 +79,8 @@ def statemanagement():
         gamedata.menu.update()
     elif gamedata.state == 'gameplay':
         gamedata.gameplay.update()
+    elif gamedata.state == 'endgame':
+        gamedata.endgame.update()
 
 if __name__ == "__main__":
     #initialize game

@@ -1,4 +1,5 @@
 from data import gamedata
+from endgame import EndGame
 from objects import *
 
 #gamelogic
@@ -26,7 +27,8 @@ class Gamelogic:
 
         if self.isending and self.currentturn == len(gamedata.players)-1:
             #end game
-            pass
+            gamedata.state = 'endgame'
+            gamedata.endgame = Endgame()
 
     def player_buy_card(self,player,deck,tierlist,index):
         cost = TokenPool(tierlist[index].carddata.cost.asList())
@@ -140,7 +142,7 @@ class Gamelogic:
                 if board.joker > 0:
                     board.joker -= 1
                     player.joker_tokens += 1
-                
+
                 #open a new card for card taken
                 tierlist[index] = deck.draw_card()
 
