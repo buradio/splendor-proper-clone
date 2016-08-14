@@ -29,7 +29,7 @@ class Gamelogic:
             pass
 
     def player_buy_card(self,player,deck,tierlist,index):
-        cost = tierlist[index].carddata.cost
+        cost = TokenPool(tierlist[index].carddata.cost.asList())
 
         #subtract by passive tokens
         cost -= player.passive_tokens
@@ -53,7 +53,7 @@ class Gamelogic:
             print("failed to buy card")
 
     def player_buy_hold_card(self,player,index):
-        cost = player.cards_onhold[index]
+        cost = TokenPool(player.cards_onhold[index].carddata.cost.asList())
 
         #subtract by passive tokens
         cost -= player.passive_tokens
@@ -104,7 +104,7 @@ class Gamelogic:
         player.active_tokens += take_pool
 
         #log
-        print(player.name + " took " + take_pool)
+        print(player.name + " took " + repr(take_pool))
         #shift turn
         self.shiftturn()
 
@@ -115,7 +115,7 @@ class Gamelogic:
         player.active_tokens += take_pool
 
         #log
-        print(player.name + " took " + take_pool)
+        print(player.name + " took " + repr(take_pool))
         #shift turn
         self.shiftturn()
 

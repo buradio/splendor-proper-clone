@@ -60,6 +60,10 @@ class TokenPool:
         return str(self.red)+"r"+str(self.green)+"g"+str(self.blue)+"b"+ \
                str(self.black)+"k"+str(self.white)+"w"
 
+    def __str__(self):
+        return str(self.red)+"r"+str(self.green)+"g"+str(self.blue)+"b"+ \
+               str(self.black)+"k"+str(self.white)+"w"
+
 class CardData:
     def __init__(self,costdata,victory_points,gembonus_string):
         self.victory_points = victory_points

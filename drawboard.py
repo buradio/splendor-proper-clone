@@ -7,6 +7,7 @@ pygame.init()
 
 #constants
 #card_on_board
+CARD_ON_BOARD_ERROR_IMG = "asset/card-face/card-face-placeholder.png"
 CARD_ON_BOARD_SIZE = (90, 120)
 CARD_ON_BOARD_VICTORY_POINTS_FONT = pygame.font.Font(None, 36)
 CARD_COST_FONT = pygame.font.Font(None, 15)
@@ -101,8 +102,16 @@ def draw_card_on_board(card):
     surface = pygame.Surface(CARD_ON_BOARD_SIZE)
     if card != None:
         #draw faceart
-        faceart = pygame.image.load(card.faceart)
-        surface.blit(faceart,(0,0))
+        try:
+            faceart = pygame.image.load(card.faceart)
+            surface.blit(faceart,(0,0))
+        except:
+            faceart = pygame.image.load(CARD_ON_BOARD_ERROR_IMG)
+            err_text = card.faceart
+            err_font = pygame.font.Font(None,13)
+            err_render = err_font.render(err_text,1,(255,255,255))
+            surface.blit(faceart,(0,0))
+            surface.blit(err_render,(5,70))
 
         #draw victory points
         if card.carddata.victory_points != 0:

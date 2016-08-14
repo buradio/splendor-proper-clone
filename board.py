@@ -5,12 +5,12 @@ def load_deck(filename):
     infile = open(filename)
     a = []
     for line in infile:
-        l = line.split(",")[1:]
+        l = line.strip().split(",")[1:]
         g = l[0]
         pv = int(l[1])
-        tp = TokenPool([int(i) for i in l[2:]])
+        tp = TokenPool([int(i) for i in l[2:7]])
         c = CardData(tp,pv,g)
-        card = Card(c)
+        card = Card(c,faceart=l[7])
         a.append(card)
 
     return a
