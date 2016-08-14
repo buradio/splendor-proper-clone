@@ -9,8 +9,8 @@ pygame.init()
 #card_on_board
 CARD_ON_BOARD_ERROR_IMG = "asset/card-face/card-face-placeholder.png"
 CARD_ON_BOARD_SIZE = (90, 120)
-CARD_ON_BOARD_VICTORY_POINTS_FONT = pygame.font.Font(None, 36)
-CARD_COST_FONT = pygame.font.Font(None, 15)
+CARD_ON_BOARD_VICTORY_POINTS_FONT = pygame.font.Font('asset/font/freesansbold.ttf', 36)
+CARD_COST_FONT = pygame.font.Font('asset/font/freesansbold.ttf', 15)
 CARD_COST_ICONS = ["asset/icon/token-red.png",
                    "asset/icon/token-green.png",
                    "asset/icon/token-blue.png",
@@ -28,7 +28,7 @@ CARD_COST_ICON_SIZE = (10,10)
 
 #deck
 DECK_SIZE = (90, 120)
-DECK_NUMBER_OF_CARDS_FONT = pygame.font.Font(None,30)
+DECK_NUMBER_OF_CARDS_FONT = pygame.font.Font('asset/font/freesansbold.ttf',30)
 DECK_NUMBER_OF_CARDS_POS = (15,90)
 DECK_NUMBER_OF_CARDS_TEXT_COLOR = (0,0,0)
 DECK_TIER1_BACK = "asset/card-back/tier1-back.png"
@@ -44,14 +44,14 @@ BOARD_TOKEN_ICONS = ["asset/board/token-red.png",
 BOARD_JOKER_ICON = "asset/board/token-joker.png"
 BOARD_TOKENPOOL_SIZE = (560,75)
 BOARD_TOKENPOOL_ICON_SIZE = (75,75)
-BOARD_TOKENPOOL_FONT = pygame.font.Font(None,30)
+BOARD_TOKENPOOL_FONT = pygame.font.Font('asset/font/freesansbold.ttf',30)
 BOARD_TOKENPOOL_TEXT_POS = (60,60)
 BOARD_TOKENPOOL_TEXT_COLOR = (255,0,0)
 
 #playerpanel
 PLAYERPANEL_BG_IMAGE = "asset/board/playerpanel-back.png"
 PLAYERPANEL_SIZE = (200,150)
-PLAYERPANEL_NAME_FONT = pygame.font.Font(None,26)
+PLAYERPANEL_NAME_FONT = pygame.font.Font('asset/font/freesansbold.ttf',26)
 PLAYERPANEL_CARD_SIZE = (40,40)
 PLAYERPANEL_NAME_COLOR = (255,255,255)
 PLAYERPANEL_ICONS = ["asset/icon/token-red.png",
@@ -61,7 +61,7 @@ PLAYERPANEL_ICONS = ["asset/icon/token-red.png",
                    "asset/icon/token-white.png"]
 PLAYERPANEL_ICON_SIZE = (20,20)
 PLAYERPANEL_TOKENPANEL_SIZE = (20,70)
-PLAYERPANEL_TOKEN_FONT = pygame.font.Font(None, 26)
+PLAYERPANEL_TOKEN_FONT = pygame.font.Font('asset/font/freesansbold.ttf', 26)
 PLAYERPANEL_TOKEN_TEXT_ACTIVE_COLOR = (255,255,255)
 PLAYERPANEL_TOKEN_TEXT_PASSIVE_COLOR = (150,150,150)
 PLAYERPANEL_JOKER_SIZE = (45,20)
@@ -71,9 +71,9 @@ PLAYERPANEL_PV_ICON_SIZE = (20,20)
 PLAYERPANEL_PV_ICON = "asset/board/playerpanel-vp-icon.png"
 PLAYERPANEL_HOLDCARD_SIZE = (40,40)
 PLAYERPANEL_HOLDCARD_BG_IMAGE = "asset/board/playerpanel-holdcard-back.png"
-PLAYERPANEL_HOLDCARD_COST_FONT = pygame.font.Font(None,16)
+PLAYERPANEL_HOLDCARD_COST_FONT = pygame.font.Font('asset/font/freesansbold.ttf',16)
 PLAYERPANEL_HOLDCARD_COST_SIZE = (10,20)
-PLAYERPANEL_HOLDCARD_VP_FONT = pygame.font.Font(None,30)
+PLAYERPANEL_HOLDCARD_VP_FONT = pygame.font.Font('asset/font/freesansbold.ttf',30)
 PLAYERPANEL_HOLDCARD_ICONS =  ["asset/icon/token-red-small.png",
                    "asset/icon/token-green-small.png",
                    "asset/icon/token-blue-small.png",
@@ -89,9 +89,9 @@ NOBLE_COSTICONS = ["asset/icon/token-red.png",
                    "asset/icon/token-black.png",
                    "asset/icon/token-white.png"]
 NOBLE_BG_IMAGE = "asset/board/noble-back.png"
-NOBLE_COSTTEXT_FONT = pygame.font.Font(None,28)
+NOBLE_COSTTEXT_FONT = pygame.font.Font('asset/font/freesansbold.ttf',28)
 NOBLE_COSTTEXT_FONT_COLOR = (255,255,255)
-NOBLE_VP_FONT = pygame.font.Font(None,30)
+NOBLE_VP_FONT = pygame.font.Font('asset/font/freesansbold.ttf',30)
 NOBLE_VP_FONT_COLOR = (0,0,0)
 
 #board
@@ -108,7 +108,7 @@ def draw_card_on_board(card):
         except:
             faceart = pygame.image.load(CARD_ON_BOARD_ERROR_IMG)
             err_text = card.faceart
-            err_font = pygame.font.Font(None,13)
+            err_font = pygame.font.Font('asset/font/freesansbold.ttf',13)
             err_render = err_font.render(err_text,1,(255,255,255))
             surface.blit(faceart,(0,0))
             surface.blit(err_render,(5,70))
