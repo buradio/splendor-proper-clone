@@ -121,15 +121,22 @@ class Gamelogic:
 
     def player_take_card(self,board,tierlist,deck,index,player):
         card = tierlist[index]
-        tierlist[index] = None
-        player.cards_onhold.append(card)
-        #add joker token if possible
-        if board.joker > 0:
-            board.joker -= 1
-            player.joker_tokens += 1
-        #open a new card for card taken
-        tierlist[index] = deck.draw_card()
+        if card != None:
+            if len(player.cards_onhold) < 3:
+                tierlist[index] = None
+                player.cards_onhold.append(card)
+                #add joker token if possible
+                if board.joker > 0:
+                    board.joker -= 1
+                    player.joker_tokens += 1
+                
+                #open a new card for card taken
+                tierlist[index] = deck.draw_card()
 
-        #log
-        print(player.name + " hold " + repr(card))
-        self.shiftturn()
+                    #log
+                print(player.name + " hold " + repr(card))
+                self.shiftturn()
+            else:
+                print("max hold card")
+        else:
+            print("cannot take None")
